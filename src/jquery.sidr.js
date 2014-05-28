@@ -278,10 +278,11 @@
       $.error('Invalid Sidr Source');
     }
 
-    $('#' + name).find('a').each(function() {
-      $(this).click(function() {
-        methods.toggle(name);
-      });
+    $('#' + name).find('a').click(function() {
+      methods.toggle(name);
+    });
+    $(window).on('resize', function () {
+      $.sidr('close', name);
     });
 
     return this.each(function(){
@@ -290,7 +291,7 @@
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
-        
+
         sidrOpened = false;
         sidrMoving = false;
         $this.data('sidr', name);
