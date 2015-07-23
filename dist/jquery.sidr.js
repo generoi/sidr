@@ -278,27 +278,30 @@
       $.error('Invalid Sidr Source');
     }
 
-    $('#' + name).find('a').each(function() {
-      $(this).click(function() {
-        methods.toggle(name);
-      });
+    $('#' + name).find('a').click(function() {
+      methods.toggle(name);
+    });
+    $(window).on('resize', function () {
+      $.sidr('close', name);
     });
 
     return this.each(function(){
       var $this = $(this),
-          data = $this.data('sidr');
+          data = $this.data('sidr'),
+          touchStart;
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
-
+        sidrOpened = false;
+        sidrMoving = false;
         $this.data('sidr', name);
         if('ontouchstart' in document.documentElement) {
           $this.bind('touchstart', function(e) {
             var theEvent = e.originalEvent.touches[0];
-            this.touched = e.timeStamp;
+            touchStart = e.timeStamp;
           });
           $this.bind('touchend', function(e) {
-            var delta = Math.abs(e.timeStamp - this.touched);
+            var delta = Math.abs(e.timeStamp - touchStart);
             if(delta < 200) {
               e.preventDefault();
               methods.toggle(name);
