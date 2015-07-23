@@ -65,8 +65,8 @@
           displace = $menu.data('displace'),
           onOpen = $menu.data('onOpen'),
           onClose = $menu.data('onClose'),
-          bodyAnimation = {},
-          menuAnimation = {},
+          bodyAnimation,
+          menuAnimation,
           scrollTop,
           bodyClass = (name === 'sidr' ? 'sidr-open' : 'sidr-open ' + name + '-open');
 
@@ -89,14 +89,15 @@
         // Lock sidr
         sidrMoving = true;
 
-        //Set up displacement
-        if(displace === 'slide' || displace === 'squish') {
-          bodyAnimation[side] = menuWidth + 'px';
-          if(displace === 'squish') {
-            bodyAnimation['width'] = $body.width() - menuWidth;
-          }
+        // Left or right?
+        if(side === 'left') {
+          bodyAnimation = {left: menuWidth + 'px'};
+          menuAnimation = {left: '0px'};
         }
-        menuAnimation[side] = '0px';
+        else {
+          bodyAnimation = {right: menuWidth + 'px'};
+          menuAnimation = {right: '0px'};
+        }
 
         // Prepare page if container is body
         if($body.is('body')){
@@ -105,7 +106,7 @@
         }
 
         // Open menu
-        if(displace === 'slide' || displace === 'squish') {
+        if(displace){
           $body.addClass('sidr-animating').css({
             width: $body.width(),
             position: 'absolute'
@@ -141,14 +142,15 @@
         // Lock sidr
         sidrMoving = true;
 
-        //Set up displacement
-        if(displace === 'slide' || displace === 'squish') {
-          bodyAnimation[side] = 0;
-          if(displace === 'squish') {
-            bodyAnimation['width'] = $body.width() + menuWidth;
-          }
+        // Right or left menu?
+        if(side === 'left') {
+          bodyAnimation = {left: 0};
+          menuAnimation = {left: '-' + menuWidth + 'px'};
         }
-        menuAnimation[side] = '-' + menuWidth + 'px';
+        else {
+          bodyAnimation = {right: 0};
+          menuAnimation = {right: '-' + menuWidth + 'px'};
+        }
 
         // Close menu
         if($body.is('body')){
@@ -215,7 +217,7 @@
       source        : null,           // Override the source of the content.
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
-      displace: 'shift', // Displace the body content or not
+      displace: true, // Displace the body content or not
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
