@@ -281,9 +281,6 @@
     $('#' + name).find('a').click(function() {
       methods.toggle(name);
     });
-    $(window).on('resize', function () {
-      $.sidr('close', name);
-    });
 
     return this.each(function(){
       var $this = $(this),
